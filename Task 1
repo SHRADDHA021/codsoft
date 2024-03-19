@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+int main() 
+{
+    int c,n,flag=0;
+    while(flag!=1)
+    {
+    
+    c=rand()%100;
+    printf("\nGuess the number") ;
+    scanf("%d",&n);
+    
+    if(c==n)
+    {
+    printf("\n\nYou guess the correct number");
+    flag=1;
+    }
+    else{
+    
+    printf("not equal");}
+   } 
+}
