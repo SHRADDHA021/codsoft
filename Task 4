@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_TASKS 100
+#define LENGTH 50
+
+struct Task {
+    char description[LENGTH];
+    int completed;
+};
+
+struct Task tasks[MAX_TASKS];
+int numTasks = 0;
+
+void addTask(char *description) {
+    if (numTasks >= MAX_TASKS) {
+        printf("Error: Task limit reached.\n");
+        return;
+    }
+
+    if (strlen(description) > LENGTH - 1) {
+        printf("Error: Task description is too long.\n");
+        return;
+    }
+
+    strcpy(tasks[numTasks].description, description);
+    tasks[numTasks].completed = 0;
+    numTasks++;
+    printf("Task added successfully.\n");
+}
+
+void deleteTask(int index) {
+    if (index < 1 || index > numTasks) {
+        printf("Invalid task index.\n");
+        return;
+    }
+
+    index--; // Adjust for 0-based indexing
+
+    for (int i = index; i < numTasks - 1; i++) {
+        tasks[i] = tasks[i + 1];
+    }
+    numTasks--;
+    printf("Task deleted successfully.\n");
+}
+
+void displayTasks() {
+    if (numTasks == 0) {
+        printf("No tasks available.\n");
+        return;
+    }
+
+    printf("Tasks:\n");
+    for (int i = 0; i < numTasks; i++) {
+        printf("%d. [%c] %s\n", i + 1, tasks[i].completed ? 'X' : ' ', tasks[i].description);
+    }
+}
+
+int main() {
+    int choice;
+    char description[LENGTH];
+    int index;
+
+    while (1) {
+        printf("\n1. Add Task\n2. Delete Task\n3. Display Tasks\n4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter your task : ");
+                getchar(); // Clear input buffer
+                fgets(description, sizeof(description), stdin);
+                description[strcspn(description, "\n")] = 0; // Remove newline character
+                addTask(description);
+                break;
+            case 2:
+                printf("Enter task index to delete: ");
+                scanf("%d", &index);
+                deleteTask(index);
+                break;
+            case 3:
+                displayTasks();
+                break;
+            case 4:
+                printf("Exiting program.\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
